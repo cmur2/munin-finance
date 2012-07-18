@@ -1,0 +1,47 @@
+#!/usr/bin/env ruby
+
+#
+# Example config:
+#  [finance_*]
+#
+
+require 'csv'
+require 'open-uri'
+
+script = File.basename($0)
+@symbol = script.gsub('finance_', '')
+@cmd = ARGV[0]
+
+# open stderr
+$stderr = IO.new(2, "w")
+
+@symbol = 'FB'
+
+def uri(symbol)
+	"http://download.finance.yahoo.com/d/quotes.csv?s=#{symbol}&f=snl1"
+end
+
+raw_data = open(uri(@symbol)).read
+# take only first row since we've given only one symbol
+csv_data = CSV.parse(raw_data)[0]
+
+#puts csv_data.inspect
+
+def echo_price(symbol, name, price)
+	case @cmd
+	when 'config'
+		puts "graph_title wcc runs"
+		puts "graph_args --lower-limit 0"
+		puts "graph_vlabel USD"
+		puts "graph_category finance"
+		puts "graph_scale no"
+		puts "graph_info This graph shows the last trade's price of some symbols"
+		puts "#{symbol}.label #{name}"
+		puts "#{symbol}.info Last Trade (Price) for #{name}"
+		puts "#{symbol}.type GAUGE"
+	else
+		puts "#{symbol}.value #{price}"
+	end
+end
+
+echo_price(csv_data[0], csv_data[1], csv_data[2])
