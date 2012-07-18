@@ -15,8 +15,6 @@ script = File.basename($0)
 # open stderr
 $stderr = IO.new(2, "w")
 
-@symbol = 'FB'
-
 def uri(symbol)
 	"http://download.finance.yahoo.com/d/quotes.csv?s=#{symbol}&f=snl1"
 end
@@ -30,17 +28,17 @@ csv_data = CSV.parse(raw_data)[0]
 def echo_price(symbol, name, price)
 	case @cmd
 	when 'config'
-		puts "graph_title wcc runs"
+		puts "graph_title #{name} (#{symbol})"
 		puts "graph_args --lower-limit 0"
 		puts "graph_vlabel USD"
 		puts "graph_category finance"
 		puts "graph_scale no"
-		puts "graph_info This graph shows the last trade's price of some symbols"
-		puts "#{symbol}.label #{name}"
-		puts "#{symbol}.info Last Trade (Price) for #{name}"
-		puts "#{symbol}.type GAUGE"
+		puts "graph_info This graph shows the last trade's price of #{name}"
+		puts "last.label #{name}"
+		puts "last.info Last Trade (Price) for #{name}"
+		puts "last.type GAUGE"
 	else
-		puts "#{symbol}.value #{price}"
+		puts "last.value #{price}"
 	end
 end
 
