@@ -1,5 +1,13 @@
 #!/usr/bin/env ruby
 
+# Source: https://github.com/cmur2/munin-finance
+
+#
+# Example usage:
+#  Do
+#    ln -s /path/to/finance_ finance_<symbol>
+#  where <symbol> is a stock symbol known to the http://finance.yahoo.com/
+#  API like "FB" (Facebook) or "AAPL" (Apple).
 #
 # Example config:
 #  [finance_*]
